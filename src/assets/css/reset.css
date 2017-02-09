@@ -1,0 +1,46 @@
+﻿@charset 'utf-8';
+/* CSS reset */
+html{color:#000;font-family:'Microsoft Yahei','宋体',Arial; font-size: 1rem; height: 100%}
+html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,p,td,strong{padding:0;margin:0;font-family:'Microsoft Yahei','宋体',Arial;}
+table{border-collapse:collapse;border-spacing:0;}
+fieldset,img{border:0;}
+a{text-decoration:none; color:#222; outline:none;}/*此处待添加默认链接颜色*/
+var,em,strong{font-style:normal;}
+address,caption,cite,code,dfn,em,strong,th,var,optgroup{font-style:inherit;font-weight:inherit;}
+del,ins{text-decoration:none;}
+li{list-style:none;}
+caption,th{text-align:left;}
+h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}
+q:before,q:after{content:'';}
+abbr,acronym{border:0;font-variant:normal;}
+sup{vertical-align:baseline;}
+sub{vertical-align:baseline;}
+legend{color:#000;}
+input,button,textarea,select,optgroup,option{font-family:inherit; font-size:inherit;font-style:inherit;font-weight:inherit;}
+input,button,textarea,select{*font-size:100%;}
+input{border:none;outline:none;padding: 0px;}
+abbr, article, aside, audio, canvas, datalist, details, dialog, eventsource, figure, footer, header, hgroup, mark, menu, meter, nav, output, progress, section, time, video{display: block;}
+body{-webkit-user-select:none;-webkit-text-size-adjust:none;/*-webkit-transform-style:preserve-3d;*/}
+*{-webkit-tap-highlight-color:rgba(0,0,0,0);}
+.clearfix:after {
+content:"\200B";
+display:block;
+height:0;
+clear:both;
+}
+.clearfix {
+*zoom:1;
+}
+body{
+   height: 100%;
+  -webkit-tap-highlight-color: transparent;
+  background-color:#ebebeb;
+  color:#222222;
+ 
+}
+.vux-tab .vux-tab-item.vux-tab-selected{
+	border-bottom:3px solid #dd2727!important;
+	color: #dd2727!important
+}
+.vux-tab-ink-bar{background-color:#dd2727!important;}
+.content2 img{ width: 100%;overflow: hidden;}
