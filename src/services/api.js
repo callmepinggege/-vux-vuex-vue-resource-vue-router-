@@ -15,7 +15,11 @@ export const goods = {
   goodsDetail(data){
     var getTimestamp=new Date().getTime()
     return Vue.http.get(API_ROOT + '/mall/goodsDetail?datatimestamp='+getTimestamp,{params:data})
-  }
+  },
+  listScrollPic(data){
+  var getTimestamp=new Date().getTime()
+   return Vue.http.get(API_ROOT + '/mall/listScrollPic?datatimestamp='+getTimestamp,{params:data})
+  },
 }
 
 export const user = {
@@ -75,6 +79,22 @@ export const user = {
   weixinpay(data){
    return Vue.http.post(API_ROOT + '/pay/orderPay',data)
   },
+  carelist(data){
+   var getTimestamp=new Date().getTime()
+   return Vue.http.get(API_ROOT + '/mall/favoriteList?datatimestamp='+getTimestamp,{params:data})
+  },
+  removecare(data){
+   return Vue.http.post(API_ROOT + '/mall/removeFavorite',data)
+  },
+  addcare(data){
+   return Vue.http.post(API_ROOT + '/mall/addFavorite',data)
+  },
+  checkcare(data){
+   return Vue.http.get(API_ROOT + '/mall/checkFavourite',{params:data})
+  },
+  checkIsSubScribe(data){
+   return Vue.http.get(API_ROOT + '/wechatBusiness/checkIsSubScribe',{params:data})
+  }
 }
 
 

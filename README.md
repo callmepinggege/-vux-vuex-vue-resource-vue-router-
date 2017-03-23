@@ -1,18 +1,7 @@
-# shop
+# 这是一个基于微信端的单页应用，使用到的技术栈有vue（js框架），vux(ui框架)，vue-router(路由)，VueResource(http插件)。
+# 老套路 npm install 安装   然后 npm run dev 运行
+# 运行之后很多数据显示不出来对不对，当然了，因为你没有接口，这里不提供java的接口，因为那不是我我做的，我也不会，抱歉了数据这块接口自己搞定，这里只提供代码演示。
+# 微信里面坑很多这里有个网页授权的txt文件，通过webpack打包后会放到根目录的
+# 最近比较忙，等过段时间闲下来了，我会维护这个项目，把接口数据换成本地数据
 
-> this the example about vuex
 
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

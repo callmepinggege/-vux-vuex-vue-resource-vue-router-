@@ -1,5 +1,5 @@
 <style  scoped>
- .sure{ width: 20%; margin-left: 15px;vertical-align: text-top; }
+ .sure{ width: 15%; margin-left: 15px;vertical-align: text-top; }
  .list{padding-bottom:1rem; position: relative;}
  .moren{ width: 35%;}
  .list_btn{ width: 60%; position: absolute; top: 0; right: 0 }
@@ -121,6 +121,7 @@
       localStorage.removeItem("receivers")
      },
      selectadress(item){
+      if(localStorage.getItem("goods")){
       this.edits.id=item.id
       this.edits.receiver=item.receiver
       this.edits.mobile=item.mobile
@@ -134,6 +135,7 @@
       localStorage.setItem("receivers", JSON.stringify(this.edits)); 
       localStorage.removeItem("edits")
       window.location.href="/order"
+      }
     },   
     }
   }

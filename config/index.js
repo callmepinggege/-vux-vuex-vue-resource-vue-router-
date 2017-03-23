@@ -29,6 +29,13 @@ module.exports = {
           '^/api': ''
        }
       },
+      '/admin': {
+        target: 'http://localhost:8090/admin/',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/admin': ''
+       }
+      },
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

@@ -20,8 +20,8 @@
 .content_cell_1 span{ color:#dd2727; font-size:0.2rem; }
 .footer_tab_2{  position:fixed; left:0px; bottom:0px; width:100%; height:70px; z-index:90; }
 .footer_style_1{ height:54px; overflow:hidden; position:fixed; left:0px; bottom:0px; width:100%; text-align:center; background:url(../assets/img/point_bg_1.png) repeat; line-height:18px; color:#5f6364; border-top:1px solid #e0e0e0; }
-.footer_style_1 .btn_style_1{ color:#fff; font-size:0.16rem; }
-.footer_style_1 .btn_style_2{ float:right; color:#fff; font-size:0.16rem; }
+.footer_style_1 .btn_style_1{ color:#fff; font-size:0.8rem; }
+.footer_style_1 .btn_style_2{ float:right; color:#fff; font-size:0.8rem; }
 .footer_style_1 .btn_style_1 a,.footer_style_1 .btn_style_1 a:visited{ display:block; padding:18px 2px; background-color:#f7b137; color:#fff; }
 .footer_style_1 .btn_style_1 a:hover{ display:block; background-color:#f7b137; color:#fff; }
 .footer_style_1 .btn_style_2 a,.footer_style_1 .btn_style_2 a:visited{ display:block; padding:18px 2px; background-color:#dd2727; color:#fff; }
@@ -64,7 +64,7 @@
      <swiper :list="demo01_list" auto height="260px" dots-class="custom-bottom" dots-position="center"></swiper>
      <div class="bd">
       <div class="content_txt_1">
-         <h3><a href="product_detail_2.html" target="_self">{{results.name}}</a></h3>
+         <h3>{{results.name}}</h3>
          <strong>￥{{results.price}}<span class="kucun">库存：{{results.stock}}</span></strong>
       </div>
       
@@ -73,7 +73,7 @@
          <p>iPhone 7&nbsp;(A1660)&nbsp;128G&nbsp;玫瑰金色&nbsp;</p>
       </div> -->
       
-      <div class="content_txt_2">
+      <div class="content_txt_2" v-show="adresshow">
          <b>送至</b>
          <p>{{adress.city}}&nbsp;>&nbsp;{{adress.area}}&nbsp;>&nbsp;{{adress.address}}</p>
          
@@ -84,21 +84,22 @@
       <div class="weui-col-50">
           <div class="weui-row weui-no-gutter footer_style_2">
             <div class="weui-col-33">
-              <a href="contact.html" target="_self">
+              <a target="_self">
                   <img src="../assets/img/footer_nav_11.png" />
                     <p>客服</p>
                 </a>
             </div>
-            <div class="weui-col-33">
+            <div class="weui-col-33" @click="addcar">
               <a href="javascript:;" target="_self">
-                  <img src="../assets/img/footer_nav_12.png" />
-                    <p>关注</p>
+                  <img src="../assets/img/footer_nav_12.png"  v-show="!care"/>
+                  <img src="../assets/img/footer_nav_121.png" v-show="care" />
+                    <p v-show="!care">关注</p><p style="color:#ff9a14" v-show="care">关注</p>
                 </a>
             </div>
-            <div class="weui-col-33">
-              <a href="cart.html" target="_self">
+            <div class="weui-col-33" style="position:relative">
+              <a href="/car" target="_self">
                   <img src="../assets/img/footer_nav_13.png" />
-                    <p>购物车</p>
+                    <p>购物车<badge :text="amont"></badge></p>
                 </a>
             </div>
           </div>
@@ -145,20 +146,24 @@
                     </div>
                 </div>
                 
-                <div class="submit_1 clearBoth marginTop_10"><a @click="paygoods" class="a_style_6 a_btn_1">支付</a></div>
+                <div class="submit_1 clearBoth marginTop_10"><a @click="paygoods" class="a_style_6 a_btn_1">提交订单</a></div>
             </div>
      </popup>
     <loading v-model="load" text="加载中"></loading>
-    <toast v-model="show1">请添加商品</toast>
+    <!-- <toast v-model="show1">{{message}}</toast> -->
 	</div>
 
 </template>
 <script>
- import {XHeader,Swiper, SwiperItem,Popup,Loading,Toast} from 'vux'
+ import {XHeader,Swiper, SwiperItem,Popup,Loading,Toast,Badge} from 'vux'
  import {API,getQuery} from '../services';
   export default {
       data() {
           return {
+            care:true,
+            adresshow:true,
+            amont:0,
+            message:"添加成功",
             showpay:false,
             state:true,
             sum:1,
@@ -177,19 +182,7 @@
               hotelGroupCode:0,
               equipment:"original"
             },
-            demo01_list:[{
-              url: 'javascript:',
-              img: 'https://static.vux.li/demo/1.jpg',
-              title: '送你一朵fua'
-             }, {
-             url: 'javascript:',
-             img: 'https://static.vux.li/demo/2.jpg',
-             title: '送你一辆车'
-             }, {
-            url: 'javascript:',
-            img: 'https://static.vux.li/demo/3.jpg',
-            title: '送你一次旅行'
-            }],
+            demo01_list:[],
             order:{
               memberId:"",
               goodsId:"",
@@ -205,14 +198,23 @@
       SwiperItem,
       Popup,
       Loading,
-      Toast
+      Toast,
+      Badge
     },
     mounted : function() {
+        localStorage.removeItem("goodname")
         document.title="商品详情"
         this.form.goodsId = getQuery.getQueryString("id")
         API.goods.goodsDetail(this.form).then(
           (resp)=>{
            this.results = resp.body.result
+           let piclist = resp.body.result.pictureUrl.split(",")
+           for(let i=0;i<piclist.length;i++){
+              let item ={
+                "img":'http://oidluqi4c.bkt.clouddn.com/'+piclist[i]
+              }
+              this.demo01_list.push(item)
+           }
            this.load = false
           }
         )
@@ -220,10 +222,30 @@
           this.order.memberId = JSON.parse(localStorage.getItem("login")).id
           API.user.memberDefaultAddress({"memberId":this.order.memberId}).then(
           (resp)=>{
-           	 this.adress = resp.body.result
+            if(resp.body.errmsg="地址为空"){
+              this.adresshow=false
+            }else{
+              this.adress = resp.body.result
+            
+            }
+          } 
+          )
+          API.user.listMallCart({"memberId":this.order.memberId,"shopGroupCode":0}).then(
+              (resp)=>{
+              this.amont = getQuery.getJsonLength(resp.body.result)
+             }
+         )
+      
+         API.user.checkcare({"memberId":this.order.memberId,"goodsId":getQuery.getQueryString("id")}).then(
+          (resp)=>{
+           if(resp.body.errcode==0){
+              this.care = true
+           }
           }
         )
-        }
+       }else{
+        this.adresshow=false
+       }
     },
     methods :{
      buyit(){
@@ -261,32 +283,74 @@
       }
      },
      submitorder(){
-      this.order.number = this.sum
-      this.order.goodsId = getQuery.getQueryString("id")
-      if(this.state){
-      API.user.saveMallCart(this.order).then(
-          (resp)=>{
-            window.location.href="/car"
-          }
-        )
-       }
+      if( localStorage.getItem("login")){
+           this.order.number = this.sum
+      	   this.order.goodsId = getQuery.getQueryString("id")
+      	   if(this.state){
+      		API.user.saveMallCart(this.order).then(
+          	(resp)=>{
+              this.amont=this.amont+this.order.number 
+              this.message="添加成功"
+            	this.show1 = true
+              this.show = false
+          	}
+          )
+        }
+        }else{
+          let url = "index/goods?id="+getQuery.getQueryString("id")
+          localStorage.setItem("jump", url);
+          window.location.href="/login" 
+      }
      },
      paygoods(){
-        this.goods=[]
-        let good={}
-        good.goodsId= this.results.id
-        good.goodsName=this.results.name
-        good.logoUrl=this.results.logo
-        good.number=this.sum
-        good.price=this.results.price
-        good.stock=this.results.stock
-        this.goods.push(good)
-        if(this.sum>0){
-           localStorage.setItem("goods", JSON.stringify(this.goods))
-           window.location.href="/order"
-        }else{
-          this.show1 = true
-        }
+     	 if( localStorage.getItem("login")){
+          this.goods=[]
+        	let good={}
+        	good.goodsId= this.results.id
+        	good.goodsName=this.results.name
+        	good.logoUrl=this.results.logo
+        	good.number=this.sum
+        	good.price=this.results.price
+        	good.stock=this.results.stock
+        	this.goods.push(good)
+            if(this.sum>0){
+           		localStorage.setItem("goods", JSON.stringify(this.goods))
+           		window.location.href="/order"
+            }else{
+              this.message="请添加商品"
+          		this.show1 = true
+        	}
+         	}else{
+          		let url = "index/goods?id="+getQuery.getQueryString("id")
+          		localStorage.setItem("jump", url);
+          		window.location.href="/login" 
+        	}
+     },
+     addcar(){
+        if( localStorage.getItem("login")){
+           this.order.goodsId = getQuery.getQueryString("id")
+           if(this.care){
+             API.user.removecare(this.order).then(
+            (resp)=>{
+              this.message="取消成功"
+              this.show1=true
+              this.care = false
+             }
+            )
+          }else{
+            API.user.addcare(this.order).then(
+            (resp)=>{
+              this.message="关注成功"
+              this.show1=true
+              this.care = true
+            }
+           )
+          }
+         }else{
+          let url = "index/goods?id="+getQuery.getQueryString("id")
+          localStorage.setItem("jump", url);
+          window.location.href="/login" 
+      }
      }
     }
   }

@@ -50,20 +50,9 @@
         <cell title="配送信息：工作双休假日均送货" is-link></cell>
       </group>
       <group title="支付方式">
-          <div class="weui_cell">
-            <div class="weui_cell_hd"><img src="../assets/img/pay_img_1.png" alt="" width="30"></div>
-            <div class="weui_cell_bd weui_cell_primary">
-              <p>&nbsp;微信支付</p>
-            </div>
-            <div class="weui_cells_checkbox">
-              <label class="weui_check_label" for="s15">
-                <div class="weui_cell_hd">
-                  <input type="radio" class="weui_check" name="checkbox1" id="s15" checked="checked">
-                  <i class="weui_icon_checked"></i>
-                </div>
-              </label>
-            </div>
-          </div>
+        <cell title="微信支付" is-link>
+          <img slot="icon" style="margin-right:5px;"   src="../assets/img/pay_img_1.png"  width="30">
+       </cell>
       </group>
        <div class="weui-row weui-no-gutter footer_style_3">
       <div class="weui-col-60" style="padding:18px 0">合计：{{form.totalPrice}}元</div>
@@ -81,7 +70,14 @@
           return {
             value:"",
             state:true,
-            address:[],
+            address:{
+               receiver:"未填写",
+               mobile:"未填写",
+               province:"未填写",
+               city:"未填写",
+               area:"未填写",
+               address:"未填写",
+            },
             form:{
               "openid":111,
               "shopGroupCode":"0",
@@ -143,7 +139,10 @@
           for(let i=0;i<this.form.listMallGoods.length;i++){
           	this.form.totalPrice = this.form.totalPrice+parseInt(this.form.listMallGoods[i].number)*parseFloat(this.form.listMallGoods[i].price)
           }
+          this.form.totalPrice = parseFloat(this.form.totalPrice).toFixed(2)
           
+        }else{
+          window.location.href="/car"
         }
         if( localStorage.getItem("login")){
            this.form.memberId = JSON.parse(localStorage.getItem("login")).id
@@ -159,13 +158,24 @@
           }else{
             API.user.memberDefaultAddress({"memberId":this.form.memberId}).then(
             (resp)=>{
-           	 this.address = resp.body.result
-           	 this.form.receiver = resp.body.result.receiver
-           	 this.form.contact = resp.body.result.mobile
-           	 this.form.province = resp.body.result.province
-           	 this.form.city = resp.body.result.city
-           	 this.form.area = resp.body.result.area
-           	 this.form.address = resp.body.result.address
+           	 
+           	 let jslength=0;
+			       for(let js2 in resp.body.result){
+				        jslength++;
+			       }
+           	 if(jslength>0){
+           	 	this.address = resp.body.result
+           	 	this.form.receiver = resp.body.result.receiver
+           	 	this.form.contact = resp.body.result.mobile
+           	 	this.form.province = resp.body.result.province
+           	 	this.form.city = resp.body.result.city
+           	 	this.form.area = resp.body.result.area
+           	 	this.form.address = resp.body.result.address
+           	 	}
+           	 	else{
+           	 		
+           	 	}
+           	 
               }
             )
           }
@@ -177,6 +187,9 @@
     methods :{
       submit(){
         if(this.state){
+         if(this.address.receiver=="未填写"){
+         	window.location.href="/adress"
+         }else{
          API.user.submitOrder(this.form).then(
           (resp)=>{
            this.results = resp.body.result
@@ -187,9 +200,10 @@
            this.paymess.receiptName = resp.body.result.receiptName
            localStorage.setItem("paymess", JSON.stringify(this.paymess)); 
            localStorage.removeItem("goods")
-            window.location.href="/weixin"
+            window.location.href="/pay/weixin"
           }
         )
+        } 
        }
       },
     }

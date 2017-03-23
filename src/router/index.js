@@ -70,6 +70,11 @@ const weixin = resolve => {
         resolve(require('../vue/weixin.vue'));
     });
 }
+const care = resolve => {
+    require.ensure(['../vue/care.vue'], () => {
+        resolve(require('../vue/care.vue'));
+    });
+}
 const routes = [{
         path: '/index',
         name: 'index',
@@ -95,7 +100,7 @@ const routes = [{
         name: 'list',
         component: list
     },{
-        path: '/detail',
+        path: '/index/goods',
         name: 'detail',
         component: detail
     },{
@@ -123,13 +128,16 @@ const routes = [{
         name: 'new_adress',
         component: new_adress
     },{
-        path: '/weixin',
+        path: '/pay/weixin',
         name: 'weixin',
         component: weixin
+    },{
+        path: '/care',
+        name: 'care',
+        component: care
     }];
 
 export default new Router({
     mode: 'history',
-    base: __dirname,
     routes
 }); 

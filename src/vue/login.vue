@@ -5,13 +5,8 @@
 	<div>
     <x-header style="background-color:#f7fcf6;" :right-options="{showMore: true}" :left-options="{backText:'',showBack: true}">登录</x-header>
     <group style="margin-top:0.1rem">
-      <x-input title="用户名" placeholder="请输入用户名" required v-model="form.userName"></x-input>
-      <div class="weui_cell">
-        <div class="weui_cell_hd"><label class="weui_label" style="width: 4em;">密 码</label></div>
-        <div class="weui_cell_bd weui_cell_primary">
-          <input autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" type="password" placeholder="请输入密码" class="weui_input" v-model="form.password">
-        </div>
-      </div>
+      <x-input title="账号" placeholder="请输入账号"   v-model="form.userName"></x-input>
+      <x-input title="密码" placeholder="请输入密码"  type="password"  v-model="form.password"></x-input>
     </group>
     <x-button style="margin-top:1rem" @click.native="login">登录</x-button>
     <x-button @click.native="regist">注册</x-button>

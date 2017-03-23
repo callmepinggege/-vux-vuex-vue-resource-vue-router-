@@ -70,7 +70,7 @@
         var json=resp.body.result
                 /*<![CDATA[*/
         if(json.msgType&&json.msgType==1){
-          Toast(json.errorMsg)
+          //Toast(json.errorMsg)
         }
                 /*]]>*/
         //参数组装完毕调用微信支付jsapi 
@@ -84,24 +84,23 @@
                },function(res){
                 WeixinJSBridge.log(res.err_msg);
                 console.log(res.err_code +';'+ res.err_desc +';'+ res.err_msg);
-              
                 if(res.err_msg == 'get_brand_wcpay_request:ok'){
-                  that.zhifu = true
+                that.zhifu = true
                 setInterval(function(){
                    API.user.checkOrderStatus({"orderNo":that.payweixin.orderNo}).then(
                     (resp)=>{
                        if(resp.body.result.tradeState="SUCCESS"){
-                           this.zhifu = false
+                          this.zhifu = false
                           window.clearInterval()
                           localStorage.removeItem("paymess")
-                          window.location.href='/orders';
+                          window.location.href='../order_list';
                        }else{
-                           that.toast = true
+                           that.zhifu = true
                        }
                       }
                     )
                   
-                },1000);
+                },500);
                  
                 }else {
                    that.toast = true

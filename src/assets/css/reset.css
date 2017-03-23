@@ -4,7 +4,7 @@ html{color:#000;font-family:'Microsoft Yahei','宋体',Arial; font-size: 1rem; h
 html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,p,td,strong{padding:0;margin:0;font-family:'Microsoft Yahei','宋体',Arial;}
 table{border-collapse:collapse;border-spacing:0;}
 fieldset,img{border:0;}
-a{text-decoration:none; color:#222; outline:none;}/*此处待添加默认链接颜色*/
+a{text-decoration:none;outline:none;}/*此处待添加默认链接颜色*/
 var,em,strong{font-style:normal;}
 address,caption,cite,code,dfn,em,strong,th,var,optgroup{font-style:inherit;font-weight:inherit;}
 del,ins{text-decoration:none;}
@@ -44,3 +44,8 @@ body{
 }
 .vux-tab-ink-bar{background-color:#dd2727!important;}
 .content2 img{ width: 100%;overflow: hidden;}
+.vux-search_show p{ padding: 1rem 0 }
+.vux-badge { top: 0;right:0;position: absolute; width: auto; height: auto!important;}
+.weui_tabbar_item.weui_bar_item_on .weui_tabbar_label{ color:#dd2727!important; }
+.vux-search-fixed{ background: rgba(255, 255, 255, 1)!important }
+.vux-search_show p{padding: 1rem 2rem!important ;}

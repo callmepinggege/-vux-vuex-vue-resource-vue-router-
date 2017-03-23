@@ -5,16 +5,12 @@
   <div>
     <x-header style="background-color:#f7fcf6;" :left-options="{backText:'',showBack: true}">注册</x-header>
     <group style="margin-top:0.1rem">
-      <x-input title="用户名" placeholder="请输入用户名"  v-model="form.username" required></x-input>
-      <div class="weui_cell">
-        <div class="weui_cell_hd"><label class="weui_label"  style="width: 4em;">密 码</label></div>
-        <div class="weui_cell_bd weui_cell_primary">
-          <input autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" type="password" placeholder="请输入密码" class="weui_input" v-model="form.password">
-        </div>
-      </div>
+      <x-input title="用户名" placeholder="请输入用户名"  v-model="form.username" required>
+      </x-input>
+       <x-input title="密码" placeholder="请输入密码"  type="password"  v-model="form.password"></x-input>
       <x-input title="手机号" placeholder="请输入手机号" v-model="form.contact"  required name="mobile"  keyboard="number" is-type="china-mobile"></x-input>
-      <x-address :title="title" v-model="value" raw-value :list="addressData"></x-address>
-      <x-input title="详细地址" placeholder="请输入详细地址" v-model="form.address" required></x-input>   
+      <!-- <x-address :title="title" v-model="value" raw-value :list="addressData"></x-address> -->
+      <!-- <x-input title="详细地址" placeholder="请输入详细地址" v-model="form.address" required></x-input>    -->
     </group>
     <x-button @click.native="regist" style="margin-top:1rem">注册</x-button>
   </div>

@@ -26,27 +26,25 @@
     <div class="person_box_1">
       <div class="banner_cell_1"><img src="../assets/img/bg_img_1.jpg" ></div>
         <div class="txts_wrap_1">
-            <a href="/login">
             <div class="photo_box_1">
-                <div class="photo_cell_1"><img src="../assets/img/photo_1.jpg" ></div>
+                <div class="photo_cell_1"><img :src="head" ></div>
                 <div class="txts_box_1">
                   <h2>{{name}}</h2>
                     <p><a @click="loginot" class="a_style_1">退出登录</a></p>
                 </div>
             </div>
-            </a>
             <div class="txt_cell_4">设置</div>
         </div>
     </div>
     <div class="weui-row weui-no-gutter info_tab_2" style="position:relative">
-       <div class="weui-col-50"><a href="/order_list" target="_self">待收货(16)</a></div>
-       <div class="weui-col-50" style="position:absolute; right:0; top:0.5rem"><a href="/order_list" target="_self">待付款(2)</a></div>
+       <div class="weui-col-50"><a href="/order_list?state=daizhifu" target="_self">待支付({{daifuk}})</a></div>
+       <div class="weui-col-50" style="position:absolute; right:0; top:0.5rem"><a href="/order_list?state=yiwancheng" target="_self">已完成({{yiwancheng}})</a></div>
     </div>
     <group style="margin-top:1.2rem">
       <cell  title="优惠券" is-link>
          <img slot="icon" width="30" style="display:block;margin-right:5px;" src="../assets/img/youhui.png">
       </cell>
-      <cell  title="我的关注" is-link>
+      <cell  title="我的关注" is-link link="/care">
          <img slot="icon" width="25" style="display:block;margin-right:5px;" src="../assets/img/care.png">
       </cell>
        <cell  title="收货地址管理" is-link link="/adress">
@@ -72,20 +70,37 @@
         <span slot="label">购物车</span>
       </tabbar-item>
       <tabbar-item link="/user">
-        <img slot="icon" src="../assets/img/footer_nav_4.png">
-        <span slot="label">我</span>
+        <img slot="icon" src="../assets/img/footer_nav_4_active.png">
+        <span slot="label" style="color:#dd2727">我</span>
       </tabbar-item>
     </tabbar>
 	</div>
 </template>
 <script>
 import {XHeader,Tabbar,TabbarItem,Cell,Group } from 'vux'
+import {API,getQuery} from '../services';
   export default {
       data() {
           return {
+            daifuk:0,
+            yiwancheng:0,
             name:"未登录",
+            head:"http://localhost:8000/static/img/photo_1.1027d10.jpg",
             results:[],
+            orders:[],
+            nopay:[],
+            cansel:[],
+            finish:[],
             commonList: [ '' ],
+            demo1: '未支付',
+            form:{
+              memberId:"",
+              offSet:0,
+              pageSize:5,
+              equipment:"original",
+              orderCondition:"createDatetime",
+              orderDirection:"desc"
+              },
           }
       },
     components: {
@@ -97,9 +112,48 @@ import {XHeader,Tabbar,TabbarItem,Cell,Group } from 'vux'
     },
     mounted : function() {
         document.title="用户中心"
-          if( localStorage.getItem("login")){
+        if( localStorage.getItem("login")){
           this.name= JSON.parse(localStorage.getItem("login")).username
+          this.form.memberId = JSON.parse(localStorage.getItem("login")).id
+          //检查是否关注公众号
+          if(localStorage.getItem("openid")){
+          API.user.checkIsSubScribe({"openid":localStorage.getItem("openid")})
+          .then(
+            (resp)=>{
+               this.head=resp.body.result.headImgUrl
+            }
+            )
+         }
         }
+        let that = this
+        API.user.order(that.form).then(
+          (resp) => {
+           that.orders= resp.body.result.datas
+           for(let i=0;i<that.orders.length;i++){
+              if(that.orders[i].orderStatus=="1"){
+                that.orders[i].orderStatus="未支付" 
+                that.nopay.push(that.orders[i])
+                this.daifuk++
+              }
+              else if(that.orders[i].orderStatus=="2"){
+                that.orders[i].orderStatus="已取消" 
+                that.cansel.push(that.orders[i])
+              }
+              else{
+                that.orders[i].orderStatus="已完成 " 
+                that.finish.push(that.orders[i])
+                this.yiwancheng++
+              }
+           }
+          }
+        )
+        if(getQuery.getQueryString("state")=="yiwancheng"){
+          this.show_1=false
+          this.show_2=false
+          this.show_3=true
+          this.demo1="已完成"
+        }
+
     },
     methods :{
       loginot(){

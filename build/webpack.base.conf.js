@@ -83,7 +83,7 @@ var webpackConfig = {
     //微信文件打包到根目录下
     new CopyWebpackPlugin([
             // {output}/to/file.txt 
-            { from: 'MP_verify_Vyj4QXN24GCQC4Vm.txt', to: 'MP_verify_Vyj4QXN24GCQC4Vm.txt' },   
+            { from:path.resolve(__dirname, '../doc') },   
         ])
    ]
 }

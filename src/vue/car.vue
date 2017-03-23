@@ -21,7 +21,7 @@
   .footer_style_1{ position: fixed; bottom: 0; width: 100%; background: #fff}
   .content{ margin-bottom:75px}
   .title_txt_1 h2{ text-align: center;}
-  .list_cell_5 img{ width:100%;}
+  .list_cell_5 img{ width:85%;}
 
 </style>
 <template>
@@ -29,7 +29,7 @@
 	   <x-header style="background-color:#f7fcf6;border-bottom: 1px solid #e2e2e2;" :left-options="{backText:'',showBack: true}">购物车</x-header>
      <div class="content">
      <div class="content_txt_1" v-for="(item, index)  in results">
-          <div class="weui_cells_checkbox list_cell_4">
+          <div class="weui_cells_checkbox list_cell_4" @click="zongji">
             <label class=" weui_check_label" >
               <div class="weui_cell_hd">
                 <input type="checkbox" class="weui_check each" id="checkbox" :goodstype="item.goodstype" :goodsid="item.goodsId"  :goodsname="item.goodsName" :logourl="item.logoUrl" :number="item.number" :price="item.price":stock="item.stock" checked="true">
@@ -38,15 +38,15 @@
             </label>
           </div>
         
-          <a style="width:50%;height:15rem;display: inline-block
+          <a style="width:50%;display: inline-block
           ;" class="list_cell_5"><img :src="'http://oidluqi4c.bkt.clouddn.com/'+item.logoUrl"></a>
           <div class="list_cell_6">
              <p>{{item.goodsName.substring(0,15)}}</p>
              <strong>￥{{item.price}}</strong>
              <div class="weui-row num_box_1">
-                <div class="weui-col-33"><span class="num_icon_1"><a @click="supsum(item.id)">&#45;</a></span></div>
+                <div class="weui-col-33"><span class="num_icon_1"><a @click="supsum(item)">&#45;</a></span></div>
                 <div class="weui-col-33"><span class="title_txt_1"><h2>{{item.number}}</h2></span></div>
-                <div class="weui-col-33"><span class="num_icon_2"><a @click="addsum(item.id)">&#43;</a></span></div>
+                <div class="weui-col-33"><span class="num_icon_2"><a @click="addsum(item)">&#43;</a></span></div>
              </div>
           </div>
       </div>
@@ -55,7 +55,7 @@
       <div class=" weui_cells_checkbox list_cell_7" style="margin-top:1rem">
         <label class=" weui_check_label"  style="float:left">
           <div class="weui_cell_hd">
-            <input checked="true" type="checkbox" class="weui_check both" name="checkbox1" id="s15" @click="change()">
+            <input  type="checkbox" class="weui_check both" name="checkbox1" id="s15" @click="change()">
             <i class="weui_icon_checked"></i>
           </div>  
         </label>
@@ -67,7 +67,7 @@
             <strong>合计：{{money}}元</strong>
             <!--<span>已优惠：50元</span>-->
           </div>
-          <div class="btn_style_3"><a @click="submitcar">提交订单({{mount}})</a></div>
+          <div class="btn_style_3"><a @click="submitcar">提交订单</a></div>
       </div>
     </div>
     <toast v-model="show1">请添加商品</toast>
@@ -113,30 +113,41 @@
               this.money = this.money+this.results[i].price*this.results[i].number
               this.results[i].state = true
            }
+           //this.money = parseFloat(this.money).toFixed(2)
           }
         )
     },
     methods :{
-      supsum(id){
-        API.user.updateMallCart({"id":id,"updateType":"sub"}).then(
-          (resp)=>{
-             location.reload()
-          }
-        )
+      supsum(item){
+            API.user.updateMallCart({"id":item.id,"updateType":"sub"}).then()
+            item.number=item.number-1
+            if(item.number<=0){
+              item.number =1
+            }else{
+              this.money  = parseFloat(this.money) - item.price
+              this.money = parseFloat(this.money).toFixed(2)
+            }
+            
       },
-      addsum(id){
-         API.user.updateMallCart({"id":id,"updateType":"add"}).then(
-          (resp)=>{
-            location.reload()    
-          }
-        )
+      addsum(item){
+            API.user.updateMallCart({"id":item.id,"updateType":"add"}).then()
+           item.number=item.number+1
+           this.money  = parseFloat(this.money) + item.price
+           this.money = parseFloat(this.money).toFixed(2)
+          
       },
      change(){
       if(jquery(".both").prop('checked')){
-        jquery(".each").prop("checked",true)
+         jquery(".each").prop("checked",true)
+         this.money = 0
+         for(let i=0;i<this.results.length;i++){
+            this.money= this.money+this.results[i].price*this.results[i].number
+          }
+          this.money = parseFloat(this.money).toFixed(2)
       }
       else{
         jquery(".each").prop("checked",false)
+        this.money = 0
       }
      },
       submitcar(){
@@ -163,6 +174,16 @@
           this.show1 = true
         }
       },
+      zongji(){
+         let that = this
+         that.money = 0;
+         jquery(".each").each(function(){
+          if(jquery(this).prop('checked')){
+            that.money= that.money+parseInt(jquery(this).attr("number"))*parseFloat(jquery(this).attr("price"))
+          }
+        })
+         that.money = parseFloat(this.money).toFixed(2)
+      }
     }
   }
 </script>

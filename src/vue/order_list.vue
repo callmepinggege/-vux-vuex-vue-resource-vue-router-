@@ -9,8 +9,8 @@
 .cell_txt_1{ overflow:hidden; clear:both;}
 .list_box_4{ display:block; overflow:hidden;}
 .list_box_4 .list_cell_6{ overflow:hidden;}
-.list_box_4 .list_cell_6 p{ height:36px; overflow:hidden;}
-.list_box_4 .list_cell_6 span{ display:block; font-size:16px; margin-top:5px;}
+.list_box_4 .list_cell_6 p{ height:36px; overflow:hidden;color: #333}
+.list_box_4 .list_cell_6 span{ display:block; font-size:16px; margin-top:5px;color: #333}
 .weui-col-40{ width: 70%; float: left;}
 .list_img_1{ display:block; float:left; width:100px; height:100px; overflow:hidden; margin-right:5px;}
 .list_img_1 img{ width:100%; height:auto; }
@@ -44,7 +44,7 @@
       
           <!--======= content_txt_1 =======-->
           <div class="content_txt_1" v-for="goods in item.listMallOrderItem">
-              <a href="product_detail_1.html" target="_self" class="list_box_4">
+              <a :href="'/index/goods?id='+goods.goodsId" target="_self" class="list_box_4">
                   <div class="list_img_1"><img :src="'http://oidluqi4c.bkt.clouddn.com/'+goods.goodsLogo"></div>
                   <div class="list_cell_6">
                      <p>{{goods.goodsName}}</p>
@@ -74,7 +74,7 @@
       
           <!--======= content_txt_1 =======-->
           <div class="content_txt_1" v-for="goods in item.listMallOrderItem">
-              <a href="product_detail_1.html" target="_self" class="list_box_4">
+              <a :href="'/index/goods.html?id='+item.goodsId" target="_self" class="list_box_4">
                   <div class="list_img_1"><img :src="'http://oidluqi4c.bkt.clouddn.com/'+goods.goodsLogo"></div>
                   <div class="list_cell_6">
                      <p>{{goods.goodsName}}</p>
@@ -104,7 +104,7 @@
       
           <!--======= content_txt_1 =======-->
           <div class="content_txt_1" v-for="goods in item.listMallOrderItem">
-              <a href="product_detail_1.html" target="_self" class="list_box_4">
+              <a :href="'/index/goods.html?id='+item.goodsId" target="_self" class="list_box_4">
                   <div class="list_img_1"><img :src="'http://oidluqi4c.bkt.clouddn.com/'+goods.goodsLogo"></div>
                   <div class="list_cell_6">
                      <p>{{goods.goodsName}}</p>
@@ -216,6 +216,12 @@
            }
           }
         )
+        if(getQuery.getQueryString("state")=="yiwancheng"){
+          this.show_1=false
+          this.show_2=false
+          this.show_3=true
+          this.demo1="已完成"
+        }
     },
     methods :{
      show1(){
@@ -248,7 +254,7 @@
          this.paymess.totalPrice = item.totalPrice
          this.paymess.receiptName = item.receiptName
          localStorage.setItem("paymess", JSON.stringify(this.paymess)); 
-         window.location.href="/weixin"
+         window.location.href="/pay/weixin"
      }
     }
   }
