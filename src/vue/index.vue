@@ -41,7 +41,7 @@
 </style>
 <template>
 <div>
-   
+
    <search @result-click="resultClick" @on-change="getResult" :results="results" v-model="value"></search>
    <swiper  auto height="150px" dots-class="custom-bottom" dots-position="center">
       <swiper-item  v-for="(item, index) in demo01_list" >
@@ -81,13 +81,11 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
    <img  class="banner" src="../assets/img/banner_1.jpg" alt="">
     <!--======list_wrap_2======-->
-  <div class="copyright_box_1">
-      <!-- <p>武汉绿盟众智科技有限公司 版权所有</p> -->
-       <!--  <a href="https://m.kuaidi100.com/" target="_blank">快递查询</a> -->
-    </div>   
+   <div class="copyright_box_1">
+   </div>
    <tabbar  style="position:fixed">
       <tabbar-item link="/index?id=1">
         <img slot="icon" src="../assets/img/footer_nav_1_active.png">
@@ -156,7 +154,7 @@
         //openid丢失时获取openid
         if(localStorage.getItem("openid")==null){
           if(getQuery.getQueryString("code")==null){
-          let fromurl=location.href;  
+          let fromurl=location.href;
           let url="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx066707bb3a2536a&redirect_uri="+fromurl+"&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect"
             //window.location.href=url
         }else{
@@ -167,7 +165,7 @@
         )
         }
       }
-     
+
       //获取openid
       if(getQuery.getQueryString("openid")){
         localStorage.setItem("openid",getQuery.getQueryString("openid"));
@@ -175,7 +173,7 @@
 
       API.goods.listScrollPic({"shopGroupCode":"0","equipment":"equipment"}).then(
           (resp) => {
-           
+
            for(let i=0;i<resp.body.result.length;i++){
            	let item={
            		"img":'http://oidluqi4c.bkt.clouddn.com/'+resp.body.result[i].picUrl,
