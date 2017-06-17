@@ -64,6 +64,7 @@
      XButton
     },
     mounted : function() {
+        //初始化是数据
         document.title="收货地址管理"
         if( localStorage.getItem("login")){
           this.form.memberId = JSON.parse(localStorage.getItem("login")).id
@@ -86,6 +87,7 @@
         )
     },
     methods :{
+      //设为默认地址
       setmoren(id){
       API.user.setDefaultAddress({"id":id}).then(
            (resp) => {
@@ -94,9 +96,11 @@
 
         )
      },
+     //添加地址
      addadress(){
        window.location.href="/new_adress"
      },
+     //删除地址
     delet(item){
         API.user.memberAddressDelete({"id":item.id}).then(
            (resp) => {
@@ -104,6 +108,7 @@
            }
         )
      },
+     //编辑地址
     edit(item){
       this.edits.id=item.id
       this.edits.receiver=item.receiver
