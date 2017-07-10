@@ -8,6 +8,9 @@ $ snpm i
 
 ## 调试
 
+## 线上展示
+http://shop.win-sure.com/?code=051lIuW61fpbER1H5cW61AflW61lIuWU&state=1#/
+
 ```bash
 $ npm run dev
 ```
