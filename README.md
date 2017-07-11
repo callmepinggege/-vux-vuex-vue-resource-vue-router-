@@ -10,6 +10,7 @@ $ snpm i
 
 ## 线上展示
 http://shop.win-sure.com/?code=051lIuW61fpbER1H5cW61AflW61lIuWU&state=1#/
+目前这套商城是由我之前在的团队运营，需要完整代码和技术支持可以联系我向他们购买，这里只交流前端技术
 
 ```bash
 $ npm run dev
